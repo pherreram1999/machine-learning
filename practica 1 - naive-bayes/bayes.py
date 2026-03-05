@@ -1,7 +1,7 @@
 from pydoc import apropos
 
 import polars as pl
-
+from typing import Tuple, Dict, List, Set
 
 class NaiveBayes:
 
@@ -32,10 +32,16 @@ class NaiveBayes:
         pass
 
 
+class NaiveBayesContinuo(NaiveBayes):
+    def ask(self, input: List):
+
+        pass
+
+
 class NaiveBayesDiscreto(NaiveBayes):
 
 
-    def ask(self, input):
+    def ask(self, input: List) -> Dict[str, float]:
         _, cols = self._data.shape
 
         input_length = len(input)
@@ -46,17 +52,14 @@ class NaiveBayesDiscreto(NaiveBayes):
         # segun la entrada buscamos la probabilidad de cada uno de sus elemtnos
         # segun lso valores apriori
 
-        # buscamos la frencia por cada de los valores a priori
+        # buscamos la frencia por cada de los valores la etiquetas
         # se crea por cada etiqueta, un arreglo de la frecuencia del input dado
-        frecunciaXn = {}
+        frecunciaXn = {} # gyardadomos las frecuencias
         for etiqueta in self._Yr.keys():
             frecunciaXn[etiqueta] = [0] * ( cols - 1)
 
-
-
         # donde guardaron las probabilidades de Yoby
         Yobt = {}
-
 
         for etiqueta,_ in self._Yr.items():
             # buscamos la probabilidad de cada una de las entradas
@@ -70,8 +73,6 @@ class NaiveBayesDiscreto(NaiveBayes):
                         pass
                 pass
 
-
-
             # una vez que se conto las apereciones dadas
             frecunciaYr = self._Yr[etiqueta]
             probabilida_Yr = self._Yr[etiqueta] / self.num_muestras
@@ -81,12 +82,8 @@ class NaiveBayesDiscreto(NaiveBayes):
                 pass
 
             # una vez que se tiene las probabilidades
-
-
             Yobt[etiqueta] = probabilida_Yr
-
         pass
-
         # Nota: al estar basandose solo en las letras, se suscriben las probilidade, quiza baserse en una combinacion
         # por ultimo queda dividor para aplicar frecuencias
 
