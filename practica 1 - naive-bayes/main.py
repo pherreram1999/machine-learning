@@ -1,9 +1,12 @@
-from bayes import NaiveBayes
+from bayes import NaiveBayesDiscreto
 
 
 def main():
-    clasificador = NaiveBayes.discrete()
-    clasificador.Ask(['S','F','A','F'])
+    discreto = NaiveBayesDiscreto()
+    probabilidads = discreto.ask(['S','F','A','F'])
+
+
+    print(probabilidads)
     pass
 
 
