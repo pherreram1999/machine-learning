@@ -1,0 +1,15 @@
+Dia,Clima,Temperatura,Humedad,Viento,Juego
+1,S,C,A,D,N
+2,S,C,A,F,N
+3,N,C,A,D,S
+4,LL,T,A,D,S
+5,LL,F,N,D,S
+6,LL,F,N,F,N
+7,N,F,N,F,S
+8,S,T,A,D,N
+9,S,F,N,D,S
+10,LL,T,N,D,S
+11,S,T,N,F,S
+12,N,T,A,F,S
+13,N,C,N,D,S
+14,LL,T,A,F,N
