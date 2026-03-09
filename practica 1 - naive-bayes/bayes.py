@@ -6,7 +6,7 @@ class NaiveBayes:
 
     columnas = ["Clima", "Temperatura", "Humedad", "Viento", "Juego"]
 
-    def __init__(self,path = "data.csv"):
+    def __init__(self,path = "datos.csv"):
         """"Carga los datos de la fuente"""
 
         self._data = pl.read_csv(path, columns= self.columnas)
@@ -48,11 +48,17 @@ class NaiveBayes:
 class NaiveBayesDiscreto(NaiveBayes):
 
 
+    @staticmethod
+    def normal(probabilidad, probas):
+        return probabilidad / np.sum(probas)
+
 
     def predecir(self, input: List) -> Dict[str, float]:
         _, cols = self._data.shape
 
         input_length = len(input)
+
+
 
         if input_length != cols - 1:
             raise Exception(f'El input debe ser un arreglo de {cols -1}')
