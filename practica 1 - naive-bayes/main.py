@@ -28,6 +28,23 @@ def main():
     print("\n")
     NaiveBayesContinuo.print(NaiveBayesContinuo.normalizar(probabilidades))
 
+    c = 0
+    arch2 = pd.read_csv('iris.csv')
+    for i in range(len(arch2)):
+        filas2 = continuo.restituir(i,'iris.csv')
+        prob2 = continuo.predecir(filas2)
+        norm2 = NaiveBayesContinuo.normalizar(prob2)
+        print(norm2)
+        if list(norm2.values())[0] > list(norm2.values())[1] and list(norm2.values())[0] > list(norm2.values())[2]:
+            d = "Iris-setosa"
+        elif list(norm2.values())[1] > list(norm2.values())[0] and list(norm2.values())[1] > list(norm2.values())[2]:
+            d = "Iris-versicolor"
+        else:
+            d = "Iris-virginica"
+        if d == arch2.iloc[i,5]:
+            c += 1
+
+    print(c)
     pass
 
 
