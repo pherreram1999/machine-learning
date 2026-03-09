@@ -40,7 +40,6 @@ class NaiveBayesContinuo(NaiveBayes):
             # varianzas y media por especie
             var = self.varianzas[etiqueta]
             media = self.medias[etiqueta]
-
             # lo incializamos en uno para mantener la primera probaliidad
             # probabilidad apriori
             probabilidades_por_especie[etiqueta] = frecuencia_yr / self.num_muestras

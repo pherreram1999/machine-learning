@@ -23,6 +23,7 @@ class NaiveBayesDiscreto(NaiveBayes):
         self._frecuencias_Xi = self._data.unpivot(index=self.columnYr).group_by(
             [self.columnYr, "variable", "value"]).len()
 
+
     def predecir(self, input: List):
 
         probabilidades_yr = {}
