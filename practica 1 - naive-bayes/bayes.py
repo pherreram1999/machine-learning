@@ -1,6 +1,7 @@
 import polars as pl
 from typing import Tuple, Dict, List, Set
 import numpy as np
+import pandas as pd
 
 class NaiveBayes:
 
@@ -44,6 +45,11 @@ class NaiveBayes:
         """  pide el un arreglo con los valores predecir """
         pass
 
+    @staticmethod
+    def restituir(fila,archivo):
+        filas = pd.read_csv(archivo)
+        rest = list(filas.iloc[fila, [1,2,3,4]])
+        return rest
 
 class NaiveBayesDiscreto(NaiveBayes):
 
