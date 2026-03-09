@@ -48,6 +48,7 @@ class NaiveBayes:
     @staticmethod
     def restituir(fila,archivo):
         filas = pd.read_csv(archivo)
+
         rest = list(filas.iloc[fila, [1,2,3,4]])
         return rest
 
