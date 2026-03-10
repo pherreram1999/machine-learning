@@ -14,7 +14,7 @@ class NaiveBayes:
     def entrenar(self):
         pass
 
-    def __init__(self, path="data.csv"):
+    def __init__(self, path="datos.csv"):
         """"Carga los datos de la fuente"""
 
         self._data = pl.read_csv(path, columns=self.columnas)
