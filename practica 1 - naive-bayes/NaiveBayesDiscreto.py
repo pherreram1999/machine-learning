@@ -19,7 +19,7 @@ class NaiveBayesDiscreto(NaiveBayes):
         self._frecuencias_Xi = self._data.unpivot(index=self.columnYr).group_by(
             [self.columnYr, "variable", "value"]).len()
 
-        # sacamos el numero de categorais por caracteristica para el suavizado de laplace
+        # sacamos el numero de categorias por caracteristica para el suavizado de laplace
         self._num_valores = {}
         for col in self.columnas[:-1]:
             self._num_valores[col] = self._data[col].n_unique()
