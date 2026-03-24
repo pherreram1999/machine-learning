@@ -1,0 +1,8 @@
+[project]
+name = "practica-2-knn"
+version = "0.1.0"
+description = "Implementación de K-NN desde cero"
+requires-python = ">=3.11"
+dependencies = [
+    "polars",
+]
