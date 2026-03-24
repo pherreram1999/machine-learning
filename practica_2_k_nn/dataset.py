@@ -12,6 +12,8 @@ class Dataset:
     ):
         # leer el archivo CSV completo usando polars
         df = pl.read_csv(ruta_csv)
+        # eliminar columnas vacías generadas por comas extra en el CSV
+        df = df.drop(col for col in df.columns if df[col].is_null().all())
         # si hay columnas a excluir (por ejemplo "Id"), las eliminamos del dataframe
         if columnas_excluir:
             df = df.drop(columnas_excluir)

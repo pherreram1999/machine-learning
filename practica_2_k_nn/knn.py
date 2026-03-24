@@ -21,7 +21,10 @@ class KNN:
         self.clases_entrenamiento = clases
 
     def _distancia_euclidiana(self, punto_a: list[float], punto_b: list[float]) -> float:
-        """Calcula la distancia euclidiana entre dos puntos n-dimensionales."""
+        """
+        Calcula la distancia euclidiana entre dos puntos n-dimensionales.
+        Calcula la distancia punto a punto y la saca raiz de su suma
+        """
         # inicializar el acumulador de la suma de cuadrados
         suma_cuadrados = 0.0
         # recorrer cada dimensión de los puntos
