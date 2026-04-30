@@ -2,7 +2,7 @@ import kagglehub
 import os
 import pandas as pd
 from Perceptron import Perceptron
-from PerceptronGD import PerceptronGD
+from PerceptronSGD import PerceptronSGD
 from PerceptronPSO import PerceptronPSO
 
 
@@ -57,7 +57,7 @@ def usar_clasico(X, y):
 
 def usar_gd(X, y):
     # descenso gradiente heuristico (lineal, batch, targets {-1,+1})
-    modelo = PerceptronGD(epochs=100, eta=0.01)
+    modelo = PerceptronSGD(epochs=100, eta=0.01)
     modelo.entrenar(X, y)
     acc = evaluar_rendimiento(modelo, X, y, "GD")
     print(f"  Epocas usadas (early stopping): {len(modelo.costos)}")
