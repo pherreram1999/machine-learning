@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import os
+import socket
+import json
 from sklearn.neural_network import MLPClassifier
 import joblib
 
@@ -82,7 +84,13 @@ def main():
     if mlp is None:
         return
         
-    nombres_clases = ['Círculo', 'Triángulo', 'Cuadrado', 'Infinito', 'Letra M', 'Letra Z', 'Letra B', 'Alpha']
+    nombres_clases = ['Circulo', 'Triangulo', 'Cuadrado', 'Infinito', 'Letra V', 'Letra Z', 'Letra B', 'Letra N']
+
+    # Configuracion del Socket UDP para enviar datos a Godot
+    UDP_IP = "127.0.0.1"
+    UDP_PORT = 12345
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    print(f"Socket UDP configurado para enviar a Godot en {UDP_IP}:{UDP_PORT}")
 
     print("Iniciando captura de video...")
     cap = cv2.VideoCapture(0)
@@ -176,10 +184,27 @@ def main():
                         UMBRAL_NINGUNA = 0.60
                         if confianza < UMBRAL_NINGUNA:
                             ultima_prediccion = "Ninguna figura reconocida"
+                            clase_detectada = "Ninguna"
+                            id_clase = -1
                         else:
                             ultima_prediccion = f"{nombres_clases[prediccion_idx]} ({confianza:.1%} conf)"
+                            clase_detectada = nombres_clases[prediccion_idx]
+                            id_clase = int(prediccion_idx)
                             
                         print(f"Prediccion final: {ultima_prediccion}")
+                        
+                        # Construir el paquete y enviarlo por UDP a Godot
+                        paquete_udp = {
+                            "figura": clase_detectada,
+                            "id": id_clase,
+                            "confianza": float(confianza)
+                        }
+                        try:
+                            mensaje_json = json.dumps(paquete_udp)
+                            sock.sendto(mensaje_json.encode('utf-8'), (UDP_IP, UDP_PORT))
+                            print(f"-> Paquete UDP enviado: {mensaje_json}")
+                        except Exception as e:
+                            print(f"Error enviando paquete UDP: {e}")
                     
                     # Reiniciar el lienzo para la siguiente figura
                     lienzo_dibujo = np.zeros(frame.shape[:2], dtype=np.uint8)

@@ -35,9 +35,8 @@ def draw_base_shape(shape_id):
         pts = np.column_stack((x, y)).astype(np.int32)
         cv2.polylines(img, [pts], isClosed=True, color=1, thickness=1)
 
-    elif shape_id == 4:  # Letra M
-        pts = np.array([[6, 22], [6, 8], [14, 14], [22, 8], [22, 22]], np.int32)
-        cv2.polylines(img, [pts], isClosed=False, color=1, thickness=1)
+    elif shape_id == 4:  # Letra V (Usando fuente de OpenCV)
+        cv2.putText(img, 'V', (6, 23), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 1, thickness=1)
 
     elif shape_id == 5:  # Letra Z
         pts = np.array([[6, 8], [22, 8], [6, 22], [22, 22]], np.int32)
@@ -46,9 +45,8 @@ def draw_base_shape(shape_id):
     elif shape_id == 6:  # Letra B (Usando fuente de OpenCV)
         cv2.putText(img, 'B', (6, 23), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 1, thickness=1)
 
-
-    elif shape_id == 7:  # Letra B (Usando fuente de OpenCV)
-        cv2.putText(img, 'W', (6, 23), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 1, thickness=1)
+    elif shape_id == 7:  # Letra N (Usando fuente de OpenCV)
+        cv2.putText(img, 'N', (6, 23), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 1, thickness=1)
 
     return img
 
