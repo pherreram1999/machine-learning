@@ -50,37 +50,68 @@
   width: 100%,
 )
 
-// =============================================================================
-// PORTADA
-// =============================================================================
-#page(numbering: none)[
-  #v(3cm)
-  #align(center)[
-    #text(size: 13pt, fill: luma(100))[Universidad — Machine Learning]
-    #v(0.5cm)
-    #line(length: 60%, stroke: 1.5pt)
-    #v(1.5cm)
-    #text(size: 26pt, weight: "bold")[
-      Shell Sort y Algoritmos Genéticos
-    ]
-    #v(0.8cm)
-    #text(size: 16pt, fill: luma(60))[
-      Teoría, Implementación y Optimización\
-      de Secuencias de Brechas
-    ]
-    #v(2cm)
-    #text(size: 12pt)[Práctica 5 — Curso de Machine Learning]
-    #v(0.5cm)
-    #text(size: 12pt)[Pedro Alonso]
-    #v(0.5cm)
-    #text(size: 11pt, fill: luma(100))[Junio 2026]
-    #v(2cm)
-    #line(length: 60%, stroke: 1.5pt)
-    #v(1cm)
+=============================================
+// CARÁTULA
+// =============================================
 
+#grid(
+  columns: (1fr, 1fr),
+  align: (left + horizon, right + horizon),
+
+  stack(
+    dir: ltr,
+    spacing: 15pt,
+    image("ipn.jpg", width: 3.8cm),
+  ),
+
+  image("escom.png", width: 3cm)
+)
+
+#v(0.5cm)
+
+#align(center)[
+  #text(size: 20pt, weight: "bold")[INSTITUTO POLITÉCNICO NACIONAL]
+  #v(0.2cm)
+  #text(size: 18pt, weight: "bold")[ESCUELA SUPERIOR DE CÓMPUTO]
+
+  #v(1cm)
+
+  #text(size: 16pt, style: "italic", fill: rgb("#800000"))[
+    MACHINE LEARNING \
+    ROSAS CARRILLOBARY SHARED
+  ]
+
+  #v(1cm)
+
+  #line(length: 100%, stroke: 1.5pt + rgb("#800000"))
+  #v(0cm)
+  #text(size: 26pt, weight: "bold")[Practica 5. Shellsort]
+  #v(0cm)
+  #line(length: 100%, stroke: 1.5pt + rgb("#800000"))
+
+  #v(0.1cm)
+
+  #text(size: 14pt, style: "italic")[
+    Corro Mendoza Onasis Alejandro 2022630202\
+    Herrera Mauricio Pedro Alonso 2020600448\
+  ]
+
+  #v(0.2cm)
+
+  #v(2fr)
+
+  #text(size: 12pt)[
+    Ciudad de México \
+    #datetime.today().display("[day] de [month repr:long] de [year]")
   ]
 ]
+#pagebreak()
 
+#outline()
+
+#set page(numbering: "1")
+#counter(page).update(1)
+#set heading(numbering: "1.1.")
 // =============================================================================
 // RESUMEN (ABSTRACT)
 // =============================================================================
