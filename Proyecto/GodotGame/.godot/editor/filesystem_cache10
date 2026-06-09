@@ -1,0 +1,10 @@
+63f7b34db8d8cdea90c76aacccf841ec
+::res://::1780993274
+Enemy.tscn::PackedScene::6448589093519957274::1780993014::0::1::::<><><>0<>0<><>::res://scripts/enemy.gd
+Main.tscn::PackedScene::4773277143231566306::1780993035::0::1::::<><><>0<>0<><>::res://scripts/main.gd<>uid://dtlt75a0hty5::::res://Player.tscn<>uid://cx40k5f6abcde::::res://Enemy.tscn
+Player.tscn::PackedScene::250493252370900450::1780993025::0::1::::<><><>0<>0<><>::res://scripts/player.gd
+::res://scripts/::1780992994
+enemy.gd::GDScript::2621212776932290166::1780992962::0::1::::<>Node2D<><>0<>0<><>::
+main.gd::GDScript::5616145995556450263::1780992994::0::1::::<>Node2D<><>0<>0<><>::
+player.gd::GDScript::6960081691057115049::1780992971::0::1::::<>Node2D<><>0<>0<><>::
+UDPReceiver.gd::GDScript::4269579121611275857::1780992935::0::1::::<>Node<><>0<>0<><>::
