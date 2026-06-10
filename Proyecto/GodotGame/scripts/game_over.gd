@@ -18,4 +18,5 @@ func _on_retry_button_pressed():
     get_tree().change_scene_to_file("res://Main.tscn")
 
 func _on_menu_button_pressed():
+    Global.stop_python_script()
     get_tree().change_scene_to_file("res://MainMenu.tscn")

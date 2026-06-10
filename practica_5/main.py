@@ -18,7 +18,7 @@ from genetic_gaps import AlgoritmoGeneticoGaps
 
 def main():
     # --- Parametros del experimento ---
-    N = 2000         # tamaño del arreglo desordenado (opuesto)
+    N = 3000         # tamaño del arreglo desordenado (opuesto)
     K_GAPS = 5       # cuantos gaps maneja cada cromosoma del genetico
 
     # Arreglo base desordenado (se crea y guarda en disco si no existe).

@@ -1,1 +1,8 @@
 res://scripts/main.gd
+res://scripts/player.gd
+res://Main.tscn
+res://Player.tscn
+res://scripts/global.gd
+res://scripts/main_menu.gd
+res://scripts/UDPReceiver.gd
+res://scripts/game_over.gd

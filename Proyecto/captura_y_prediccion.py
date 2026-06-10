@@ -3,22 +3,26 @@ import numpy as np
 import os
 import socket
 import json
+import argparse
 from sklearn.neural_network import MLPClassifier
 import joblib
 
 def entrenar_o_cargar_modelo():
     """Carga el MLP si ya está entrenado y guardado, sino lo entrena desde el dataset."""
-    modelo_path = 'mlp_modelo.pkl'
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    modelo_path = os.path.join(base_dir, 'mlp_modelo.pkl')
+    dataset_path = os.path.join(base_dir, 'dataset_geometrico_28x28.npz')
+    
     if os.path.exists(modelo_path):
         print("Cargando modelo MLP guardado...")
         return joblib.load(modelo_path)
     
     print("Cargando dataset...")
-    if not os.path.exists("dataset_geometrico_28x28.npz"):
-        print("Error: No se encontró el archivo dataset_geometrico_28x28.npz.")
+    if not os.path.exists(dataset_path):
+        print(f"Error: No se encontró el archivo {dataset_path}.")
         return None
         
-    data = np.load("dataset_geometrico_28x28.npz")
+    data = np.load(dataset_path)
     X = data['X']
     y = data['Y']
     
@@ -79,7 +83,7 @@ def procesar_trazo(lienzo):
     
     return vector, binarizada
 
-def main():
+def main(modo):
     mlp = entrenar_o_cargar_modelo()
     if mlp is None:
         return
@@ -92,12 +96,101 @@ def main():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     print(f"Socket UDP configurado para enviar a Godot en {UDP_IP}:{UDP_PORT}")
 
+    if modo == 'mouse':
+        print("Iniciando modo MOUSE. Escuchando trazos de Godot en el puerto 12346...")
+        sock_recv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock_recv.bind((UDP_IP, 12346))
+        
+        # Enviar señal de listo a Godot
+        try:
+            ready_msg = json.dumps({"status": "ready"})
+            sock.sendto(ready_msg.encode('utf-8'), (UDP_IP, UDP_PORT))
+        except Exception as e:
+            pass
+            
+        while True:
+            try:
+                data, addr = sock_recv.recvfrom(65535)
+                mensaje = data.decode('utf-8')
+                paquete = json.loads(mensaje)
+                
+                if "puntos" in paquete:
+                    puntos = paquete["puntos"]
+                    if len(puntos) < 2:
+                        continue
+                        
+                    # Reconstruir lienzo
+                    # Godot coordinates might be large, but let's just find the bounding box
+                    # or draw directly on a 500x500 canvas.
+                    # Actually, the points can just be drawn relative to their minimums.
+                    puntos_np = np.array(puntos, dtype=np.int32)
+                    min_x, min_y = np.min(puntos_np, axis=0)
+                    max_x, max_y = np.max(puntos_np, axis=0)
+                    
+                    w = max_x - min_x + 20
+                    h = max_y - min_y + 20
+                    
+                    # Normalizar puntos al nuevo lienzo (empezando en 10,10)
+                    puntos_norm = puntos_np - [min_x - 10, min_y - 10]
+                    
+                    lienzo_dibujo = np.zeros((h, w), dtype=np.uint8)
+                    cv2.polylines(lienzo_dibujo, [puntos_norm], isClosed=False, color=255, thickness=4)
+                    
+                    print("Trazo recibido de Godot. Procesando...")
+                    resultado = procesar_trazo(lienzo_dibujo)
+                    
+                    if resultado is not None:
+                        vector, img_bin = resultado
+                        
+                        vector_input = vector.reshape(1, -1)
+                        probabilidades = mlp.predict_proba(vector_input)[0]
+                        prediccion_idx = np.argmax(probabilidades)
+                        confianza = probabilidades[prediccion_idx]
+                        
+                        UMBRAL_NINGUNA = 0.60
+                        if confianza < UMBRAL_NINGUNA:
+                            clase_detectada = "Ninguna"
+                            id_clase = -1
+                        else:
+                            clase_detectada = nombres_clases[prediccion_idx]
+                            id_clase = int(prediccion_idx)
+                            
+                        print(f"Prediccion (Mouse): {clase_detectada} ({confianza:.1%} conf)")
+                        
+                        paquete_udp = {
+                            "figura": clase_detectada,
+                            "id": id_clase,
+                            "confianza": float(confianza)
+                        }
+                        
+                        try:
+                            mensaje_json = json.dumps(paquete_udp)
+                            sock.sendto(mensaje_json.encode('utf-8'), (UDP_IP, UDP_PORT))
+                        except Exception as e:
+                            print(f"Error enviando paquete UDP: {e}")
+                            
+            except KeyboardInterrupt:
+                break
+            except Exception as e:
+                print(f"Error en recepción UDP: {e}")
+                
+        sock_recv.close()
+        return
+
+
     print("Iniciando captura de video...")
     cap = cv2.VideoCapture(0)
     
     if not cap.isOpened():
         print("Error: No se pudo acceder a la cámara web.")
         return
+
+    # Enviar señal de listo a Godot una vez encendida la cámara
+    try:
+        ready_msg = json.dumps({"status": "ready"})
+        sock.sendto(ready_msg.encode('utf-8'), (UDP_IP, UDP_PORT))
+    except Exception as e:
+        pass
 
     lienzo_dibujo = None
     dibujando = False
@@ -215,23 +308,21 @@ def main():
         mask_lienzo = lienzo_dibujo > 0
         frame[mask_lienzo] = [255, 0, 0] # Pintar el trazo de color azul en la visualización en vivo
         
-        # Mostrar las instrucciones y predicción en la pantalla
-        cv2.putText(frame, "Usa tu pluma LED rojo para dibujar", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
-        cv2.putText(frame, "Presiona ESC para salir", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (200, 200, 200), 2)
-        
-        if ultima_prediccion:
-            cv2.putText(frame, f"Ultima Prediccion: {ultima_prediccion}", (10, frame.shape[0] - 20), 
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-        
-        cv2.imshow('Captura de Trazo LED Rojo', frame)
-        
-        # Salir si se presiona la tecla ESC
-        key = cv2.waitKey(1) & 0xFF
-        if key == 27: 
-            break
-            
+        # Enviar frame a Godot por UDP
+        # Redimensionar para reducir tamaño (Godot lo escalará al tamaño del TextureRect)
+        frame_resized = cv2.resize(frame, (320, 240))
+        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70]
+        result, encimg = cv2.imencode('.jpg', frame_resized, encode_param)
+        if result:
+            try:
+                sock.sendto(encimg.tobytes(), (UDP_IP, 12347))
+            except Exception as e:
+                pass # Packet dropped or error
+                
     cap.release()
-    cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description="Detector de Figuras (Cámara o Mouse)")
+    parser.add_argument('--modo', type=str, default='camara', choices=['camara', 'mouse'], help="Modo de entrada: camara o mouse")
+    args = parser.parse_args()
+    main(args.modo)

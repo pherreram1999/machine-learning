@@ -1,6 +1,7 @@
 extends Node
 
 signal figura_reconocida(figura_nombre, confianza)
+signal python_ready
 
 var udp_server := UDPServer.new()
 var peer : PacketPeerUDP
@@ -26,6 +27,11 @@ func _process(_delta):
                 procesar_prediccion(datos)
 
 func procesar_prediccion(datos: Dictionary):
+    if datos.has("status") and datos["status"] == "ready":
+        print("UDP Recibido -> Python Script READY")
+        python_ready.emit()
+        return
+        
     var figura_detectada = datos.get("figura", "Ninguna")
     var confianza = datos.get("confianza", 0.0)
     

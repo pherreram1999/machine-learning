@@ -1,39 +1,39 @@
-[gd_scene load_steps=4 format=3 uid="uid://b89hf92jkopqw"]
+[gd_scene format=3 uid="uid://caahga2jkopqw"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
-[ext_resource type="PackedScene" uid="uid://d78hf92jkopqw" path="res://Player.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://cmardsikqqk4v" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://dtlt75a0hty5" path="res://Player.tscn" id="2_player"]
 [ext_resource type="PackedScene" uid="uid://cx40k5f6abcde" path="res://Enemy.tscn" id="3_enemy"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=1617290236]
 script = ExtResource("1_main")
 enemy_scene = ExtResource("3_enemy")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1549868375]
 offset_right = 1280.0
 offset_bottom = 720.0
 color = Color(0.12, 0.12, 0.12, 1)
 
-[node name="Trench" type="ColorRect" parent="."]
+[node name="Trench" type="ColorRect" parent="." unique_id=232863723]
 offset_top = 450.0
 offset_right = 1280.0
 offset_bottom = 720.0
 color = Color(0.2, 0.15, 0.1, 1)
 
-[node name="Player" parent="." instance=ExtResource("2_player")]
+[node name="Player" parent="." unique_id=358424718 instance=ExtResource("2_player")]
 
-[node name="SpawnTimer" type="Timer" parent="."]
+[node name="SpawnTimer" type="Timer" parent="." unique_id=1873880254]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1034106189]
 process_mode = 3
 
-[node name="HealthUI" type="HBoxContainer" parent="CanvasLayer"]
+[node name="HealthUI" type="HBoxContainer" parent="CanvasLayer" unique_id=2034623864]
 offset_left = 20.0
 offset_top = 20.0
 offset_right = 200.0
 offset_bottom = 60.0
 theme_override_constants/separation = 10
 
-[node name="PauseButton" type="Button" parent="CanvasLayer"]
+[node name="PauseButton" type="Button" parent="CanvasLayer" unique_id=934621007]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -45,7 +45,7 @@ grow_horizontal = 0
 theme_override_font_sizes/font_size = 24
 text = "Pausa"
 
-[node name="PausePanel" type="ColorRect" parent="CanvasLayer"]
+[node name="PausePanel" type="ColorRect" parent="CanvasLayer" unique_id=217483779]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -54,7 +54,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.6)
 
-[node name="Label" type="Label" parent="CanvasLayer/PausePanel"]
+[node name="Label" type="Label" parent="CanvasLayer/PausePanel" unique_id=1183242794]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -71,7 +71,7 @@ theme_override_font_sizes/font_size = 48
 text = "PAUSA"
 horizontal_alignment = 1
 
-[node name="ResumeButton" type="Button" parent="CanvasLayer/PausePanel"]
+[node name="ResumeButton" type="Button" parent="CanvasLayer/PausePanel" unique_id=843159883]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -90,3 +90,43 @@ text = "Reanudar"
 [connection signal="pressed" from="CanvasLayer/PauseButton" to="." method="_on_pause_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/PausePanel/ResumeButton" to="." method="_on_resume_button_pressed"]
 
+[node name="DrawingArea" type="ColorRect" parent="CanvasLayer" unique_id=987654321]
+visible = false
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -300.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(0, 0, 0, 0.5)
+
+[node name="Line2D" type="Line2D" parent="CanvasLayer/DrawingArea" unique_id=987654322]
+width = 5.0
+default_color = Color(0, 1, 0, 1)
+
+[node name="Instruction" type="Label" parent="CanvasLayer/DrawingArea" unique_id=987654323]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Dibuja aquí"
+horizontal_alignment = 1
+
+[node name="CameraFeed" type="TextureRect" parent="CanvasLayer/DrawingArea" unique_id=987654324]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5

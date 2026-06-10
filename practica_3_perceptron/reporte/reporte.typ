@@ -19,37 +19,68 @@
   #text(size: 13pt, weight: "bold")[#it]
 ]
 
-// ====== Portada ======
+=============================================
+// CARÁTULA
+// =============================================
+
+#grid(
+  columns: (1fr, 1fr),
+  align: (left + horizon, right + horizon),
+
+  stack(
+    dir: ltr,
+    spacing: 15pt,
+    image("ipn.jpg", width: 3.8cm),
+  ),
+
+  image("escom.png", width: 3cm)
+)
+
+#v(0.5cm)
+
 #align(center)[
-  #v(3cm)
-  #text(size: 22pt, weight: "bold")[
-    Reporte comparativo
+  #text(size: 20pt, weight: "bold")[INSTITUTO POLITÉCNICO NACIONAL]
+  #v(0.2cm)
+  #text(size: 18pt, weight: "bold")[ESCUELA SUPERIOR DE CÓMPUTO]
+
+  #v(1cm)
+
+  #text(size: 16pt, style: "italic", fill: rgb("#800000"))[
+    MACHINE LEARNING \
+    ROSAS CARRILLOBARY SHARED
   ]
 
-  #v(0.4cm)
-  #text(size: 18pt, weight: "bold")[
-    Implementaciones del Perceptrón
+  #v(1cm)
+
+  #line(length: 100%, stroke: 1.5pt + rgb("#800000"))
+  #v(0cm)
+  #text(size: 26pt, weight: "bold")[Practica 3. Perceptron]
+  #v(0cm)
+  #line(length: 100%, stroke: 1.5pt + rgb("#800000"))
+
+  #v(0.1cm)
+
+  #text(size: 14pt, style: "italic")[
+    Corro Mendoza Onasis Alejandro 2022630202\
+    Herrera Mauricio Pedro Alonso 2020600448\
   ]
 
-  #v(0.5cm)
-  #text(size: 13pt)[
-    Clásico, Descenso por Gradiente (Adaline) y Particle Swarm Optimization
+  #v(0.2cm)
+
+  #v(2fr)
+
+  #text(size: 12pt)[
+    Ciudad de México \
+    #datetime.today().display("[day] de [month repr:long] de [year]")
   ]
-
-  #v(2.5cm)
-  #text(size: 12pt)[Ingeniería de Sistemas Computacionales]
-
-  #v(0.3cm)
-  #text(size: 11pt)[Aprendizaje Automático]
-
-  #v(1.5cm)
-  #text(size: 11pt)[2026]
 ]
-
 #pagebreak()
 
-// ====== Indice ======
-#outline(title: [Índice], depth: 2)
+#outline()
+
+#set page(numbering: "1")
+#counter(page).update(1)
+#set heading(numbering: "1.1.")
 
 // ====== 1. Introduccion ======
 = Introducción
